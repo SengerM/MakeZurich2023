@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Termodinámica</title>
+	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> <!-- This fixes the problem of small font (some texts and also the math) in mobile devices, see https://stackoverflow.com/a/35564095/8849755 -->
+	<link rel="stylesheet" href="https://sengerm.github.io/html-academic-publishing/css_and_scripts/style.css">
+	<!-- Math support https://www.mathjax.org/#gettingstarted -->
+    <script>
+	MathJax = {
+	  tex: {
+		inlineMath: [['$', '$'], ['\\(', '\\)']]
+	  },
+	  svg: {
+		fontCache: 'global'
+	  }
+	};
+	</script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+	
+</head>
+
+<body>
+
+<div id="document_title"></div>
+
+<div style="margin: 22px; text-align: center;">June 2023</div>
+
+<siglas class="definition" first="________" short="___"></siglas>
+
+<div id="table-of-contents">
+	<h2 class="unnumbered">Contents</h2>
+</div>
+
+<h1>Introduction</h1>
+
+<p>This project aims to answer the question <em>how much energy can be saved if (part of) the thermal energy carried by the water going into the drain of a shower is recovered?</em> Consider the scheme shown in <crossref toid="Figure: a guy taking a shower"></crossref> where a person is taking a shower. This person configures the tap such that a temperature T<sub>shower</sub> that he likes comes out from the shower. This is achieved by mixing hot and cold water at temperatures T<sub>hot</sub> and T<sub>cold</sub> respectively. The water is used by the individual taking the shower and is afterwards disposed through the drain at a temperature T<sub>drain</sub>, as shown in the figure.</p>
+
+<float class="Figure" id="Figure: a guy taking a shower">
+	<image src="media/2.svg" style="max-width: 100%; max-height: 66vh;"></image>
+	<floatcaption>A scheme of a person in a shower.</floatcaption>
+</float>
+
+<p>Due to the nature of the showering process, the water is actually used for a very brief time and usually T<sub>drain</sub> is still substantially higher than T<sub>cold</sub>. This poses a motivation to recover part of the thermal energy carried by the water flowing into the drain to be reused. One possible way of recovering this thermal energy is with the addition of a heat exchanger as shown in <crossref toid="Figure: a guy taking a shower with a heat exchanger"></crossref>. Now, a heat exchanger is added to recover the thermal energy flowing into the drain and bring it back into the shower using the cold water source.</p>
+
+<float class="Figure" id="Figure: a guy taking a shower with a heat exchanger">
+	<image src="media/3.svg" style="max-width: 100%; max-height: 66vh;"></image>
+	<floatcaption>A scheme of a person in a shower using a heat exchanger to recover part of the thermal energy carried by the water through the drain.</floatcaption>
+</float>
+
+<p>In the following sections this approach will be studied and an estimation of the energy savings that can be achieved will be presented.</p>
+
+<h1>Analysis of the problem</h1>
+
+<p>In this section the problem will be analyzed from a physical point of view.</p>
+
+<h2>Regular shower scheme</h2>
+
+<p>Let's start with the regular shower scheme illustrated in <crossref toid="Figure: a guy taking a shower"></crossref>. The temperature T<sub>shower</sub> is achieved by mixing some amount of hot and cold water. When multiple fluids at different temperatures are mixed the final temperature is given by&nbsp;<crossref toid="Reference: mixture of fluids"></crossref>
+
+<equation>
+	$$T=\frac{\sum_{i}T_{i}c_{i}m_{i}}{\sum_{i}m_{i}c_{i}}$$
+</equation>
+
+where $T_i$ is the temperature of each fluid, $m_i$ the mass of each fluid and $c_i$ the specific heat. Differentiating with respect to time and assuming a steady state flow in which the temperatures $T_i$ are constant the previous equation converts into 
+
+<equation>
+	$$T=\frac{\sum_{i}T_{i}\dot{m}_{i}c_{i}}{\sum_{i}\dot{m}_{i}c_{i}}$$
+</equation>
+
+where $\dot{m}_{i}=\frac{dm_{i}}{dt}$ is the mass flow rate of each fluid. For the simple case of the hot and cold water shown in <crossref toid="Figure: a guy taking a shower"></crossref> the equation becomes simply
+
+<equation id="Equation: nsdoakmdsaomk">
+	$$T_{\text{shower}}=\frac{T_{\text{hot}}\dot{m}_{\text{hot}}+T_{\text{cold}}\dot{m}_{\text{cold}}}{\dot{m}_{\text{hot}}+\dot{m}_{\text{cold}}}$$
+</equation>
+
+When $T_\text{hot}$ and $T_\text{cold}$ are fixed, as is usually the case in these scenarios, then the way to change $T_\text{shower}$ is to change the mass flow rates of hot and cold water, as we all know from experience.
+</p>
+
+<p>Defining $\dot{M}=\dot{m}_{\text{hot}}+\dot{m}_{\text{cold}}$ as the total flow rate, i.e. the total amount of water coming out from the shower, then from <crossref toid="Equation: nsdoakmdsaomk"></crossref> we can obtain the required amount of hot water as a function of the temperatures and the total mass flow rate in the shower:
+
+<equation id="Equation: required amount of hot water in normal shower">
+	$$\dot{m}_{\text{hot}}=\dot{M}\frac{T_{\text{shower}}-T_{\text{cold}}}{T_{\text{hot}}-T_{\text{cold}}}$$
+</equation>
+
+It is important to note that this equation is valid only for $T_{\text{cold}}\leq T_{\text{shower}}\leq T_{\text{hot}}$. As expected, we see that the closer $T_\text{shower}$ is to $T_\text{hot}$ the higher the amount of hot water.
+</p>
+
+<h2>Shower with heat exchanger</h2>
+
+<p>Let's now move on to the modified scheme with a heat exchanger shown in <crossref toid="Figure: a guy taking a shower with a heat exchanger"></crossref>. Before this, a brief formulation of how a generic heat exchanger works will be presented.</p>
+
+<h3>Heat exchanger</h3>
+
+<p>Consider the heat exchanger shown in <crossref toid="Figure: heat exchanger"></crossref>. In this heat exchanger there are two lines, one through which the hot fluid enters at a rate $\dot{m}_{\text{hot}}$ and temperature $T_{\text{hot}}$, the other through which the cold fluid enters at a rate $\dot{m}_{\text{cold}}$ and temperature $T_{\text{cold}}$. During their passage through this heat exchanger these fluids exchange heat (obviously) and they come out at temperatures $T_\text{hot final}$ and $T_\text{cold final}$, as shown in the scheme.</p>
+
+<float class="Figure" id="Figure: heat exchanger">
+	<image src="media/1.svg" style="max-width: 100%; max-height: 66vh;"></image>
+	<floatcaption>A generic heat exchanger.</floatcaption>
+</float>
+
+<p>In the steady state, i.e. when the flow rate of the fluids is constant and all the transients are already stabilized, the thermal energy rate transferred from the hot fluid into the cold fluid can be expressed as 
+
+<equation id="oadsp8h9qpdn">
+	$$\dot{Q}=\dot{m}_\text{cold}\intop_{T_\text{cold}}^{T_\text{cold final}}c_\text{cold}\,dT$$
+</equation>
+
+where $c_\text{cold}$ is the specific heat of the cold fluid. The maximum transferred heat will be obtained when $T_{\text{cold final}}=T_{\text{hot}}$, which could be possible for example if the two pipes are in thermal contact for a long enough distance and all heat loses can be neglected. This would be the exchanged heat in an ideal heat exchanger, 
+
+<equation id="fitdud5fi7f6i7g">
+	$$\dot{Q}_{\text{max}}=\dot{m}_{\text{cold}}\intop_{T_{\text{cold}}}^{T_{\text{hot}}}c_{\text{cold}}\,dT$$
+</equation>
+
+We can then express the transferred heat as a function of $\dot{Q}_{\text{max}}$ and some efficiency $\eta$ of the heat exchanger which will depend upon its implementation details:
+
+<equation id="oip8huoigyoufuf">
+	$$\dot{Q}=\eta\dot{Q}_{\text{max}}$$
+</equation>
+
+</p>
+
+<p>
+Combining equations <crossref toid="oadsp8h9qpdn"></crossref>, <crossref toid="fitdud5fi7f6i7g"></crossref> and <crossref toid="oip8huoigyoufuf"></crossref> we can calculate $T_\text{final cold}$ from
+
+<equation>
+	$$\intop_{T_{\text{cold}}}^{T_{\text{cold final}}}c_{\text{cold}}\,dT=\eta\intop_{T_{\text{cold}}}^{T_{\text{hot}}}c_{\text{cold}}\,dT$$
+</equation>
+
+</p>
+
+<p>Since the specific heat of water at atmospheric pressure is roughly constant, the previous equation simplifies to
+
+<equation id="Equation: heat exchanger temperatures equation">
+	$$T_{\text{cold final}}=T_{\text{cold}}+\eta\left(T_{\text{hot}}-T_{\text{cold}}\right)$$
+</equation>
+
+This simple equation allows to express the final temperature of the cold fluid as a function of the other known temperatures and the efficiency of the exchanger.
+</p>
+
+<h3>Introducing a heat exchanger in the shower</h3>
+
+<p>Now let us study how the amount of required hot water changes when a heat exchanger is introduced as shown in <crossref toid="Figure: a guy taking a shower with a heat exchanger"></crossref>. We start from <crossref toid="Equation: required amount of hot water in normal shower"></crossref> but this time the temperature of the cold water is given by the temperature in the output of the heat exchanger, i.e. $T_{\text{cold}}\leftarrow T_{1}$, so 
+
+<equation id="Equation: niapojwpamipaom">
+	$$\dot{m}_{\text{hot}}=\dot{M}\frac{T_{\text{shower}}-T_{1}}{T_{\text{hot}}-T_{1}}$$
+</equation>
+
+Now, the temperature at the output of the heat exchanger can be expressed using <crossref toid="Equation: heat exchanger temperatures equation"></crossref> replacing the appropriate temperatures according to <crossref toid="Figure: a guy taking a shower with a heat exchanger"></crossref>, i.e.
+
+<equation>
+	$$T_{1}=T_{\text{cold}}+\eta\left(T_{\text{drain}}-T_{\text{cold}}\right)$$
+</equation>
+
+and so replacing into <crossref toid="Equation: niapojwpamipaom"></crossref> we obtain
+
+<equation id="Equation: required amount of hot water in shower with heat exchanger">
+	$$\dot{m}_{\text{hot}}=\dot{M}\frac{T_{\text{shower}}-\eta T_{\text{drain}}-\left(1-\eta\right)T_{\text{cold}}}{T_{\text{hot}}-\eta T_{\text{drain}}-\left(1-\eta\right)T_{\text{cold}}}$$
+</equation>
+
+This equation expresses the required amount of hot water as a function of all the parameters. 
+</p>
+
+<p>Let's assume that $T_{\text{drain}}\approx T_{\text{shower}}$, which in the steady state is reasonable since the water is only used for a brief time and rapidly flows into the drain. In this case <crossref toid="Equation: required amount of hot water in shower with heat exchanger"></crossref> reads
+
+<equation id="Equation: required amount of hot water in shower with heat exchanger when Tdrain is approx Tshower">
+	$$\dot{m}_{\text{hot}}\approx\dot{M}\frac{\left(1-\eta\right)\left(T_{\text{shower}}-T_{\text{cold}}\right)}{T_{\text{hot}}-T_{\text{cold}}-\eta\left(T_{\text{shower}}-T_{\text{cold}}\right)}$$
+</equation>
+
+</p>
+
+<h2>Savings in energy when using a heat exchanger</h2>
+
+<p>In this section it will be calculated how much energy is saved when using a heat exchanger as compared with the regular case.</p>
+
+<p>The required power to heat water for a shower can be calculated as 
+
+<equation>
+	$$P=\dot{m}_{\text{hot}}\intop_{T_{\text{cold}}}^{T_{\text{hot}}}c\,dT$$
+</equation>
+
+where it was assumed that the water is heated from the same source as the cold water, i.e. the starting temperature is $T_\text{cold}$. Note that since $\dot{m}_{\text{hot}}$ is a flow rate then so $P$ is an energy rate, i.e. a power. From this equation we see that 
+
+<equation>
+	$$\frac{P_{\text{with heat exchanger}}}{P_{\text{regular shower}}}=\frac{\dot{m}_{\text{hot with heat exchanger}}}{\dot{m}_{\text{hot regular shower}}}$$
+</equation>
+
+i.e. the fraction of saved power is the same as the fraction of saved hot water.
+</p>
+
+<p>The fraction of saved hot water can be computed by dividing <crossref toid="Equation: required amount of hot water in shower with heat exchanger when Tdrain is approx Tshower"></crossref> by <crossref toid="Equation: required amount of hot water in normal shower"></crossref>. This gives
+
+<equation id="Equation: ratio of hot water with and without heat exchanger">
+	$$\frac{\dot{m}_{\text{hot with heat exchanger}}}{\dot{m}_{\text{hot regular shower}}}=\frac{\left(1-\eta\right)\Delta_{\text{source}}}{\Delta_{\text{source}}-\eta\Delta_{\text{shower}}}$$
+</equation>
+
+where $\Delta_{\text{source}}=T_{\text{hot}}-T_{\text{cold}}$ and $\Delta_{\text{shower}}=T_{\text{shower}}-T_{\text{cold}}$ were defined. It can be seen that when $\eta=0$, which is equivalent to having no heat exchanger, the ratio is 1 which means that there is no saving at all, as expected. Likewise, as $\eta\to 1$ the ratio goes to 0 meaning that an ideal heat exchanger will recover all the heat flowing into the drain and so a tiny amount of hot water (or equivalently heating power) would be required. Of course in reality an efficiency of 1 is never achieved.
+</p>
+
+<p>In <crossref toid="Figure: fraction of saved hot water vs exchanger efficiency plot"></crossref> a plot of <crossref toid="Equation: ratio of hot water with and without heat exchanger"></crossref> is shown. As seen, the lower the temperature setting for the shower the higher the benefit. Typical efficiencies of heat exchangers lie between 70-90&nbsp;%&nbsp;<crossref toid="Reference: Distributed hybrid system and prospect of the future Energy Internet"></crossref> which implies savings in the range of 50-80&nbsp;%.</p>
+
+<float class="Figure" id="Figure: fraction of saved hot water vs exchanger efficiency plot">
+	<iframe src="media/fraction_of_savings_vs_exchanger_efficiency.html" class="plotly" style="max-width: 555px;"></iframe>
+	<floatcaption>Amount of hot water saved (when using the configuration shown in <crossref toid="Figure: a guy taking a shower with a heat exchanger"></crossref> as compared to the regular configuration from <crossref toid="Figure: a guy taking a shower"></crossref>) as a function of the efficiency of the heat exchanger given by <crossref toid="Equation: ratio of hot water with and without heat exchanger"></crossref>.</floatcaption>
+</float>
+
+<h1>Impact for Zürich</h1>
+
+<p>In this section the impact of adding a heat recovery system in the shower of residential homes will be estimated.</p>
+
+<h2 id="Section: impact single household">Impact in a single household</h2>
+
+<p>We start by calculating the required energy to heat up the water of one shower using the regular scheme from <crossref toid="Figure: a guy taking a shower"></crossref>, which is given by
+
+<equation id="Equation: iopqgyoqcunp">
+	$$\text{shower energy}=\intop_{t_{\text{start}}}^{t_{\text{stop}}}\dot{m}_{\text{hot}}\,dt\,\intop_{T_{\text{cold}}}^{T_{\text{hot}}}c\,dT
+$$
+</equation>
+
+with $t$ being the time. $\dot{m}_{\text{hot}}$ can be obtained from <crossref toid="Equation: required amount of hot water in normal shower"></crossref>. In the steady state this reduces to
+
+<equation id="Equation: oiancspmascq">
+	$$\text{shower energy}\approx\dot{M}\Delta_{\text{shower}}t_{\text{shower}}c_{\text{water}}$$
+</equation>
+
+where $t_\text{shower}$ is the time it takes to take the shower.
+
+</p>
+
+<p>In order to continue with the calculation, the different parameters such as temperatures and water flow rates have to be determined. These were measured by the authors at their residences, which are regular rented apartment in the greater Zürich area. The measured parameters are
+<ul>
+		<li>T<sub>cold</sub>&nbsp;=&nbsp;15&nbsp;°C</li>
+		<li>T<sub>hot</sub>&nbsp;=&nbsp;54&nbsp;°C</li>
+		<li>T<sub>shower</sub>&nbsp;=&nbsp;38&nbsp;°C</li>
+		<li>T<sub>drain</sub>&nbsp;=&nbsp;36&nbsp;°C</li>
+		<li>Shower flow rate&nbsp;=&nbsp;90&nbsp;cm<sup>3</sup>&nbsp;s<sup>-1</sup></li>
+		<li>Shower time&nbsp;=&nbsp;14&nbsp;min</li>
+</ul>
+The temperatures were measured (in summer) using a Sensirion SHT4x&nbsp;Smart&nbsp;Gadget&nbsp;<crossref toid="Reference: Sensirion T+H gadget"></crossref> placed inside a sealed plastic bag to avoid the water destroying it. The shower flow rate was measured by collecting the water coming from the shower with a large water container during 80&nbsp;s and then counting how many times an ice cream container of 900&nbsp;cm<sup>3</sup> could be filled with that water. All times were measured with the stopwatch of a smartphone.</p>
+
+<p>The volumetric shower flow rate can be converted into the shower mass flow rate $\dot{M}$ with the density of the water which is approximately 1&nbsp;g&nbsp;ml<sup>-1</sup>&nbsp;<crossref toid="Reference: Water Wikipedia"></crossref>. This gives a shower mass flow rate of 0.9&nbsp;kg&nbsp;s<sup>-1</sup>. The specific heat $c_{\text{water}}$ is, under the conditions considered here, approximately constant with a value of 4184&nbsp;J&nbsp;kg<sup>−1</sup>&nbsp;K<sup>−1</sup>&nbsp;<crossref toid="Reference: Water Wikipedia"></crossref>.</p>
+
+<p>Inserting all the numbers into <crossref toid="Equation: oiancspmascq"></crossref> we obtain
+
+<equation>
+	$$\text{shower energy}\approx72.7\times10^{6}\text{ J}=20.2\text{ kWh}$$
+</equation>
+
+which is in agreement with other sources. As seen in <crossref toid="Equation: oiancspmascq"></crossref> this depends on the temperature of the cold water so it could vary in different regions and will probalby be higher during the winter.</p>
+
+<p>From <crossref toid="Equation: iopqgyoqcunp"></crossref> we see that the energy is proportional to the hot water mass flow rate. Thus
+
+<equation>
+	$$\frac{\text{shower energy with heat exchanger}}{\text{shower energy}}=\frac{\dot{m}_{\text{hot with heat exchanger}}}{\dot{m}_{\text{hot regular shower}}}$$
+</equation>
+
+so we can obtain the savings in energy using <crossref toid="Equation: ratio of hot water with and without heat exchanger"></crossref>, i.e.
+
+<equation id="Equation: ipqmimxqpuqs">
+	$$\text{shower energy with HE}=\text{shower energy without HE}\frac{\left(1-\eta\right)\Delta_{\text{source}}}{\Delta_{\text{source}}-\eta\Delta_{\text{shower}}}$$
+</equation>
+
+<crossref toid="Figure: shower energy vs exchanger efficiency"></crossref> shows a plot of this equation using the parameters values previously determined. We see that for high efficiencies of the heat exchanger the savings are drastic.
+</p>
+
+<float class="Figure" id="Figure: shower energy vs exchanger efficiency">
+	<iframe src="media/shower_energy_vs_exchanger_efficiency.html" class="plotly" style="max-width: 555px;"></iframe>
+	<floatcaption>Shower energy when a heat exchanger is used, as given by <crossref toid="Equation: ipqmimxqpuqs"></crossref>.</floatcaption>
+</float>
+
+<h2>Impact for the city</h2>
+
+<p>In order to estimate the impact for the city of Zürich we can proportionally scale the results from <crossref toid="Section: impact single household"></crossref>. The city of Zürich has approximately 4.3×10<sup>5</sup>&nbsp;inhabitants&nbsp;<crossref toid="Reference: Zurich population"></crossref>. Let's assume that each of them takes a shower (similar to the one studied in <crossref toid="Section: impact single household"></crossref>) once every two days. This amounts to approximately 7.8×10<sup>7</sup> showers per year which in terms of energy is approximately 1.5&nbsp;GWh per year. By installing a heat exchanger in each household with an efficiency of around 70&nbsp;% this consumption can be cut by 50&nbsp;%, i.e. 750&nbsp;MWh per year.</p>
+
+<h1>Conclusions</h1>
+
+<div id="references_list">
+	<h1 class="unnumbered">References</h1>
+	<reference id="Reference: mixture of fluids"><a href="https://www.engineeringtoolbox.com/mixing-fluids-temperature-mass-d_1785.html">https://www.engineeringtoolbox.com/mixing-fluids-temperature-mass-d_1785.html</a>.</reference>
+	<reference id="Reference: Distributed hybrid system and prospect of the future Energy Internet">Yu Luo, Yixiang Shi, Ningsheng Cai, Chapter 2 - Distributed hybrid system and prospect of the future Energy Internet, Academic Press, 2021, ISBN 9780128191842, <a href="https://doi.org/10.1016/B978-0-12-819184-2.00002-X">https://doi.org/10.1016/B978-0-12-819184-2.00002-X</a>.</reference>
+	<reference id="Reference: Sensirion T+H gadget">SHT4x Smart Gadget, Sensirion. <a href="https://www.sensirion.com/products/catalog/SHT4x-Smart-Gadget/">https://www.sensirion.com/products/catalog/SHT4x-Smart-Gadget/</a>.</reference>
+	<reference id="Reference: Water Wikipedia">Water, Wikipedia. <a href="https://en.wikipedia.org/wiki/Water">https://en.wikipedia.org/wiki/Water</a>.</reference>
+	<reference id="Reference: Zurich population">Stadt Zürich, <a href="https://www.stadt-zuerich.ch/portal/en/index/portraet_der_stadt_zuerich/zahlen_u_fakten.html">https://www.stadt-zuerich.ch/portal/en/index/portraet_der_stadt_zuerich/zahlen_u_fakten.html</a>.</reference>
+</div>
+
+<!--
+<div id="footnotes_list">
+	<h1 class="unnumbered">Footnotes</h2>
+</div>
+-->
+
+<script src="https://sengerm.github.io/html-academic-publishing/css_and_scripts/script.js"></script>
+<script src="https://sengerm.github.io/html-academic-publishing/css_and_scripts/authors.js"></script>
+</body>
+
+</html>
