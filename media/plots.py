@@ -9,7 +9,7 @@ T_SHOWERs = [30,38,42]
 shower_time = 14*60
 specific_heat_water = 4184 # J kg−1 K−1
 Joule_over_kWh = 2.77778e-7**-1
-shower_mass_flow_rate = 0.9 # kg/s
+shower_mass_flow_rate = 0.09 # kg/s
 
 data = []
 for T_hot in T_HOTs:
